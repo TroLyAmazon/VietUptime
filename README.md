@@ -1,4 +1,4 @@
-````md
+
 # 📈 DotStatus (Flask-only)
 
 !Python
@@ -164,4 +164,4 @@ True
 
 MIT (or your preferred license)
 
-```
+
