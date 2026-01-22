@@ -1,0 +1,43 @@
+# DotStatus (Flask-only)
+
+## Setup
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# Linux: source .venv/bin/activate
+pip install -r requirements.txt
+
+## Create owner password hash
+python -c "from werkzeug.security import generate_password_hash; print(generate_password_hash('YOUR_PASSWORD'))"
+
+
+Copy sample hash :scrypt:32768:8:1$Mk7ekQlqb................8b62aa48de1cafcbeec0f3
+
+## Env
+$env:SECRET_KEY="change-me"
+$env:OWNER_USERNAME="owner"
+$env:OWNER_PASSWORD_HASH='paste-hash-here'
+$env:TIMEZONE="Asia/Bangkok"
+
+# optional seed
+$env:SEED_TARGET_NAME="my1"
+$env:SEED_TARGET_BASE_URL="https://my1.dotuananh.me"
+$env:SEED_TARGET_STATS_PATH="/api/stats"
+
+
+# update checker (optional)
+$env:GITHUB_REPO="TroLyAmazon/VietUptime"
+
+## Run
+python run.py
+
+## Notes
+- Scheduler runs hourly at minute 0 (Asia/Bangkok) inside the same process.
+- If you deploy with gunicorn, keep 1 worker to avoid double polling.
+
+
+
+
+Test password:
+python -c "import os; from werkzeug.security import check_password_hash; print(check_password_hash(os.getenv('OWNER_PASSWORD_HASH',''), 'YOUR_PASSWORD'))"
+
+Don't charge OWNER_PASSWORD_HASH

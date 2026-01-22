@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+  <div class="card-h">
+    <div>
+      <h2>DB Viewer / Export</h2>
+      <div class="muted">DB: {{ db_path or "N/A" }}</div>
+      <div class="muted">Size: {{ db_size }} bytes</div>
+    </div>
+    <a class="btn ghost" href="{{ url_for('owner.targets') }}">Back</a>
+  </div>
+
+  <div class="row">
+    <div class="pill">Targets: <b>{{ targets_count }}</b></div>
+    <div class="pill">Snapshots: <b>{{ snaps_count }}</b></div>
+    <a class="btn" href="{{ url_for('owner.db_export') }}">Download SQLite</a>
+    <a class="btn ghost" href="{{ url_for('owner.snapshots_csv') }}">Export CSV (all)</a>
+  </div>
+
+  <h3 class="mt">Latest 100 snapshots</h3>
+  <div class="table">
+    <div class="tr head">
+      <div>ID</div><div>Target</div><div>Bucket</div><div>OK</div><div>HTTP</div><div>RT</div>
+    </div>
+    {% for s in latest_snaps %}
+      <div class="tr">
+        <div>{{ s.id }}</div>
+        <div>{{ s.target_id }}</div>
+        <div class="muted">{{ s.hour_bucket }}</div>
+        <div>{% if s.ok %}UP{% else %}DOWN{% endif %}</div>
+        <div>{{ s.http_status or "—" }}</div>
+        <div>{{ s.latency_ms or "—" }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

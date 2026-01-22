@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+  <div class="card-h">
+    <div>
+      <h2>Targets</h2>
+      <div class="muted">CRUD targets + enable/disable</div>
+    </div>
+
+    <form method="post" action="{{ url_for('owner.logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn ghost" type="submit">Logout</button>
+    </form>
+  </div>
+
+  <div class="row">
+    <a class="btn ghost" href="{{ url_for('owner.update_page') }}">Version / Check Update</a>
+    <a class="btn ghost" href="{{ url_for('owner.db_page') }}">DB Viewer / Export</a>
+  </div>
+
+  <h3 class="mt">Add Target</h3>
+  <form method="post" action="{{ url_for('owner.targets_add') }}" class="grid2">
+    {{ form.hidden_tag() }}
+    <div>
+      <label>Name</label>
+      {{ form.name(class_="input", placeholder="my1") }}
+    </div>
+    <div>
+      <label>Base URL</label>
+      {{ form.base_url(class_="input", placeholder="https://my1.dotuananh.me") }}
+    </div>
+    <div>
+      <label>Stats Path</label>
+      {{ form.stats_path(class_="input", value="/api/stats") }}
+    </div>
+    <div class="align-end">
+      <button class="btn" type="submit">Add</button>
+    </div>
+  </form>
+
+  <h3 class="mt">List</h3>
+  <div class="table">
+    <div class="tr head">
+      <div>ID</div><div>Name</div><div>URL</div><div>Enabled</div><div>Actions</div>
+    </div>
+
+    {% for t in targets %}
+      <div class="tr">
+        <div>{{ t.id }}</div>
+        <div><b>{{ t.name }}</b></div>
+        <div class="muted">{{ t.base_url }}{{ t.stats_path }}</div>
+        <div>{% if t.enabled %}Yes{% else %}No{% endif %}</div>
+
+        <div class="actions">
+          <form method="post" action="{{ url_for('owner.targets_toggle', target_id=t.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn ghost" type="submit">
+              {% if t.enabled %}Disable{% else %}Enable{% endif %}
+            </button>
+          </form>
+
+          <form method="post"
+                action="{{ url_for('owner.targets_delete', target_id=t.id) }}"
+                onsubmit="return confirm('Delete target?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn danger" type="submit">Delete</button>
+          </form>
+
+          <form method="post" action="{{ url_for('owner.targets_toggle_click', target_id=t.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn ghost" type="submit">
+              {% if t.public_click %}Click: ON{% else %}Click: OFF{% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

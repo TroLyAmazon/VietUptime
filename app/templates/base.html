@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{{ title or "DotStatus" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand"><a href="{{ url_for('public.index') }}">DotStatus</a></div>
+<div class="nav">
+  <a href="{{ url_for('public.index') }}">Dashboard</a>
+  {% if current_user.is_authenticated %}
+    <a href="{{ url_for('owner.targets') }}">Owner</a>
+  {% endif %}
+</div>
+
+  </div>
+
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashwrap">
+          {% for cat, msg in messages %}
+            <div class="flash {{ cat }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

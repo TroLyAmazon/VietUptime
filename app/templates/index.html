@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="grid">
+  <div class="card">
+    <div class="card-h">
+      <div>
+        <h2>Response Time (Last 48h)</h2>
+        <div class="muted">Timezone: {{ tz }}</div>
+      </div>
+      <div>
+        <select id="targetSelect" class="select">
+          {% for t in targets %}
+            <option value="{{ t.id }}" {% if t.id == default_target_id %}selected{% endif %}>
+              {{ t.name }} {% if not t.enabled %}(disabled){% endif %}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <canvas id="latencyChart" height="110"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-h">
+      <div>
+        <h2>Recent Events</h2>
+        <div class="muted">Down periods (open/closed)</div>
+      </div>
+    </div>
+    <div class="events">
+      {% for e in events %}
+        <div class="event">
+          <div class="event-title">
+            {% if e.target %}{{ e.target.name }}{% else %}Target #{{ e.target_id }}{% endif %}
+          </div>
+          <div class="muted">
+            Down: {{ e.started_at }} →
+            {% if e.ended_at %}Up: {{ e.ended_at }}{% else %}<b>ONGOING</b>{% endif %}
+            {% if e.http_status %} · HTTP {{ e.http_status }}{% endif %}
+            {% if e.reason %} · {{ e.reason }}{% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="muted">No events yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="card mt">
+  <div class="card-h">
+    <div>
+      <h2>Services</h2>
+      <div class="muted">Uptime % is computed from available hourly samples; no data shows as gray.</div>
+    </div>
+  </div>
+
+  {% for c in cards %}
+    <div class="service">
+      <div class="service-row">
+        <div class="svc-name">
+          <div class="dot {% if c.last and c.last.ok %}ok{% else %}bad{% endif %}"></div>
+          <div>
+            <div class="name">{{ c.target.name }}</div>
+            <div class="muted">
+              {% if c.clickable %}
+                <a href="{{ c.href }}" target="_blank" rel="noopener noreferrer">{{ c.host }}</a>
+              {% else %}
+                {{ c.host }}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="svc-metrics">
+          <div class="pill">24h: <b>{% if c.uptime_24h is not none %}{{ c.uptime_24h }}%{% else %}—{% endif %}</b></div>
+          <div class="pill">7d: <b>{% if c.uptime_7d is not none %}{{ c.uptime_7d }}%{% else %}—{% endif %}</b></div>
+          <div class="pill">30d: <b>{% if c.uptime_30d is not none %}{{ c.uptime_30d }}%{% else %}—{% endif %}</b></div>
+          <div class="pill">90d: <b>{% if c.uptime_90d is not none %}{{ c.uptime_90d }}%{% else %}—{% endif %}</b></div>
+
+          <div class="pill">
+            RT:
+            <b>{% if c.last and c.last.latency_ms is not none %}{{ c.last.latency_ms }}ms{% else %}—{% endif %}</b>
+          </div>
+
+          <div class="pill">
+            Last:
+            <b>
+              {% if c.last %}
+                {{ c.last.hour_bucket.strftime('%Y-%m-%d %H:%M') if c.last.hour_bucket else '—' }}
+              {% else %}
+                —
+              {% endif %}
+            </b>
+          </div>
+        </div>
+      </div>
+
+      <div class="bars" title="Last 90 days uptime (per day)">
+        {% for b in c.bars_90d %}
+          <div class="bar {{ b.cls }}"
+               title="{{ b.date }} · {% if b.pct is none %}no data{% else %}{{ b.pct }}%{% endif %}">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<div id="dotstatusData" data-default-target="{{ default_target_id or '' }}"></div>
+
+{% endblock %}
