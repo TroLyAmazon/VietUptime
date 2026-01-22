@@ -40,14 +40,9 @@ A lightweight, single-process status dashboard built with **Flask**. It monitors
 **Windows (PowerShell):**
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
 ```
 
 Linux/macOS:
-
-```bash
-source .venv/bin/activate
-```
 
 Install:
 

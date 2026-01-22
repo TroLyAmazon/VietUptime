@@ -153,11 +153,11 @@ def update_page():
     try:
         info = check_update(current_app)
         if info is None:
-            err = "Missing GITHUB_REPO env. Set: GITHUB_REPO=TroLyAmazon/VietUptime"
+            err = 'Missing GITHUB_REPO env. Set: GITHUB_REPO="TroLyAmazon/VietUptime"'
     except Exception as e:
         err = str(e)
-
     return render_template("owner_update.html", info=info, err=err)
+
 
 
 # ---- DB viewer / export ----

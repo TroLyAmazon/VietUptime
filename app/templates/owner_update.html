@@ -5,11 +5,11 @@
   <div class="card-h">
     <div>
       <h2>Version / Check Update</h2>
-      {% if info %}
-        <div class="muted">Local: {{ info.local_version }}</div>
-      {% endif %}
+      <div class="muted">Check latest GitHub release</div>
     </div>
-    <a class="btn ghost" href="{{ url_for('owner.targets_page') }}">Back</a>
+
+    <!-- ✅ đúng endpoint -->
+    <a class="btn ghost" href="{{ url_for('owner.targets') }}">Back</a>
   </div>
 
   {% if err %}
@@ -18,6 +18,7 @@
 
   {% if info %}
     <div class="mt">
+      <div><b>Local:</b> {{ info.local_version }}</div>
       <div><b>Latest:</b> {% if info.latest_version %}{{ info.latest_version }}{% else %}—{% endif %}</div>
 
       {% if info.has_update %}
@@ -33,14 +34,12 @@
     </div>
 
     <div class="row mt">
-      <!-- GitHub repo -->
       <a class="btn ghost" href="{{ info.repo_url }}" target="_blank" rel="noopener noreferrer" title="Open GitHub Repo">
-        <span style="font-size:18px; margin-right:6px;">🐙</span> GitHub
+        🐙 GitHub
       </a>
 
-      <!-- Latest release -->
       <a class="btn" href="{{ info.release_url }}" target="_blank" rel="noopener noreferrer" title="Open Latest Release">
-        <span style="font-size:18px; margin-right:6px;">⬇️</span> Downloads
+        ⬇️ Downloads
       </a>
 
       {% if info.asset_url %}
@@ -49,9 +48,10 @@
         </a>
       {% endif %}
     </div>
-
+  {% else %}
     <div class="muted mt">
-      Tip: tạo GitHub Release (tag vX.Y.Z) để nút Downloads luôn trỏ đúng “Releases mới nhất”.
+      Missing update config. Set in PowerShell then restart server:
+      <pre style="margin-top:10px">$env:GITHUB_REPO="TroLyAmazon/VietUptime"</pre>
     </div>
   {% endif %}
 </div>
