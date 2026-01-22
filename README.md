@@ -1,45 +1,45 @@
 ````md
-# DotStatus (Flask-only)
+# 📈 DotStatus (Flask-only)
 
-A lightweight status dashboard built with **Flask-only** (single process) to monitor multiple services via a simple JSON endpoint (default: `/api/stats`).  
-Includes **public dashboard** + **owner admin panel** (CRUD targets, DB viewer/export, update check).
+!Python
+!License
 
----
-
-## Features
-
-### Public (`/`)
-- Multi-service status overview
-- **Uptime bars** (last 90 days)
-- **Overall uptime**: 24h / 7d / 30d / 90d (computed from available samples; no data = gray)
-- **Response time chart** (last 48h, Chart.js)
-- Recent down/up events
-
-### Owner Admin (`/owner`)
-- Owner login
-- CRUD targets (add/remove/enable/disable)
-- Toggle **Public Click** (allow users to click hostname → open in new tab)
-- DB viewer + export (safe, no SQL console)
-- **Check Update** (shows latest GitHub Release link)
+A lightweight, single-process status dashboard built with **Flask**. It monitors multiple services via a simple JSON endpoint (default: `/api/stats`) and includes both a **public dashboard** and a secure **owner admin panel**.
 
 ---
 
-## Requirements
-- Python 3.10+ (recommended 3.11/3.12)
-- Works on Windows / Linux
+## ✨ Features
+
+### 🌐 Public Dashboard (`/`)
+*   **Multi-service Overview**: At-a-glance status for all services.
+*   **Uptime Bars**: Visual history of the last 90 days.
+*   **Overall Uptime Stats**: 24h, 7d, 30d, and 90d calculations (gray if no data).
+*   **Response Time Chart**: Interactive Chart.js graph for the last 48 hours.
+*   **Event Log**: Recent down/up events.
+
+### 🛡️ Owner Admin (`/owner`)
+*   **Secure Login**: Password-protected admin area.
+*   **Target Management**: CRUD operations (Add, Remove, Enable, Disable targets).
+*   **Public Click Toggle**: Control if users can click hostnames to open them.
+*   **Database Tools**: Safe DB viewer and export functionality (no raw SQL).
+*   **Update Checker**: Checks for the latest GitHub Release.
 
 ---
 
-## Quick Start
+## 📦 Requirements
 
-### 1) Create venv + install deps
-```bash
-python -m venv .venv
-````
+*   **Python**: 3.10+ (Recommended: 3.11/3.12)
+*   **OS**: Windows / Linux / macOS
 
-Windows PowerShell:
+---
 
+## 🚀 Quick Start
+
+### 1. Setup Virtual Environment
+
+**Windows (PowerShell):**
 ```powershell
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
@@ -164,6 +164,4 @@ True
 
 MIT (or your preferred license)
 
-```
-::contentReference[oaicite:0]{index=0}
 ```
