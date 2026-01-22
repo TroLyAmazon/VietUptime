@@ -1,8 +1,10 @@
 
-# 📈 DotStatus (Flask-only)
+# 📈 DotStatus
 
 !Python
 !License
+
+You can use this repo https://github.com/TroLyAmazon/PteroMon with DotStatus
 
 A lightweight, single-process status dashboard built with **Flask**. It monitors multiple services via a simple JSON endpoint (default: `/api/stats`) and includes both a **public dashboard** and a secure **owner admin panel**.
 
@@ -35,26 +37,48 @@ A lightweight, single-process status dashboard built with **Flask**. It monitors
 
 ## 🚀 Quick Start
 
-### 1. Setup Virtual Environment
+You can choose between the **Automated Setup** (recommended) or **Manual Setup**.
+
+### Option 1: Automated Setup (Recommended)
+
+We provide a `Setup.py` script that handles virtual environment creation, dependency installation, and configuration generation.
+
+1.  **Run Setup**:
+    ```bash
+    python Setup.py
+    ```
+    *   Follow the interactive prompts to set your `SECRET_KEY`, `OWNER_PASSWORD`, etc.
+    *   The script will generate a `.venv` folder and startup scripts (`run.cmd`, `run.ps1`).
+
+2.  **Start Server**:
+    *   **Windows (CMD)**: Double-click `run.cmd` or run `run.cmd`.
+    *   **Windows (PowerShell)**: Run `.\run.ps1`.
+    *   **Linux/macOS**:
+        ```bash
+        ./.venv/bin/python run.py
+        ```
+
+---
+
+### Option 2: Manual Setup
+
+#### 1. Setup Virtual Environment
 
 **Windows (PowerShell):**
 ```powershell
 python -m venv .venv
-```
-
-Linux/macOS:
-
-Install:
-
-```bash
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
----
+**Linux/macOS:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-## Owner Password Setup
-
-### 2) Generate password hash
+#### 2. Generate Password Hash
 
 ```bash
 python -c "from werkzeug.security import generate_password_hash; print(generate_password_hash('YOUR_PASSWORD'))"
@@ -158,5 +182,3 @@ True
 ## License
 
 MIT (or your preferred license)
-
-
